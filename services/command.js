@@ -1,4 +1,4 @@
-import { TodoItem, TodoList } from "./todoList.js";
+import { TodoItem, TodoList } from './todoList.js';
 
 export class Command {
   name;
@@ -10,8 +10,8 @@ export class Command {
 }
 
 export const Commands = {
-  ADD: "add",
-  DELETE: "delete",
+  ADD: 'add',
+  DELETE: 'delete',
 };
 
 export const CommandExecutor = {
@@ -22,12 +22,13 @@ export const CommandExecutor = {
         const todoInput = globalThis.DOM.todoInput;
         const todoText = todoInput.value.trim();
 
-        if (todoText !== "") {
+        if (todoText !== '') {
           todoList.add(new TodoItem(todoText));
-          todoInput.value = "";
+          todoInput.value = '';
         }
         break;
       case Commands.DELETE:
+        todoList.delete(command.args);
         break;
     }
   },

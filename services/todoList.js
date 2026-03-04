@@ -1,4 +1,4 @@
-import { observerMixin } from "./mixins.js";
+import { observerMixin } from './mixins.js';
 
 export class TodoItem {
   constructor(text) {
@@ -26,14 +26,13 @@ export class TodoList {
 
   constructor() {
     if (TodoList.instance) {
-      throw new Error("use get instance");
+      throw new Error('use get instance');
     }
   }
 
   add(item) {
     const array = Array.from(this.#data);
-    const itemExists = array.filter((t) => t.equals(item)).length > 1;
-    console.log("Asdas");
+    const itemExists = array.filter((t) => t.equals(item)).length > 0;
     if (!itemExists) {
       this.#data.add(item);
       this.notify();
