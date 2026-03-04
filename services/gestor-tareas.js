@@ -1,6 +1,8 @@
+import { GestorHistorial } from './gestor-historial.js';
+
 export class GestorTareas {
   constructor() {
-    this.historial = [];
+    this.historial = new GestorHistorial();
   }
 
   ejecutar(comando) {
@@ -9,6 +11,8 @@ export class GestorTareas {
   }
 
   deshacer() {
-    this.historial.pop()?.deshacer();
+    const estado = this.historial.pop();
+
+    if (estado) estado.deshacer();
   }
 }
