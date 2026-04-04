@@ -1,15 +1,35 @@
 # WEB-ISW-233
 
-Simple todo app with Vanilla JS
+## Patrones que se usaron
 
-You have a code that works but it has several problems 
+### 1. **Command**
 
-What if we want to:
-- Save the list locally?
-- Add keyboard shortcuts?
-- Make it more complex in the future?
-- Create an undo action?
+Se uso para las acciones del carrito:
 
-Your task:
-- Decouple the project using design patterns!!!
-- Be creative make your to answer the previous questions 
+- `AddToCartCommand`: agregar producto
+- `RemoveFromCartCommand`: eliminar un producto
+
+**Archivos:**
+
+- `services/CommandManager.js`
+- `services/commands/cartCommands.js`
+
+### 2. **Observer**
+
+El **Proxy** de `services/Store.js` se usa como observer para detectar cambios del carrito.
+
+### 3. **Strategy**
+
+Se usa para que el almacenamiento pueda usarse con diferentes estrategias:
+
+- `LocalStorageAdapter`: guardar en localStorage
+- `MemoryStorageAdapter`: fallback en memoria
+
+## Atajos
+
+| Atajo          | Acción                    |
+| -------------- | ------------------------- |
+| `Ctrl/Cmd + Z` | Deshacer la ultima accion |
+| `Alt + 1`      | Ir a Home                 |
+| `Alt + 2`      | Ir a Productos            |
+| `Alt + 3`      | Ir a Tu Pedido            |
