@@ -1,61 +1,101 @@
+function buildTextPage(text, level = 'h1') {
+  const pageElement = document.createElement(level);
+  pageElement.textContent = text;
+  return pageElement;
+}
+
+function buildProductDetailPage(params) {
+  const pageElement = document.createElement('h2');
+  pageElement.textContent = 'Product detail page: ' + String(params.id);
+  pageElement.dataset.productId = params.id;
+  return pageElement;
+}
+
+const routes = [
+  { path: '/', createView: () => document.createElement('menu-page') },
+  { path: '/products', createView: () => document.createElement('menu-page') },
+  { path: '/restaurants', createView: () => buildTextPage('Restaurants Page') },
+  { path: '/order', createView: () => document.createElement('order-page') },
+  {
+    path: '/products/:id',
+    createView: (params) => buildProductDetailPage(params),
+  },
+];
+
+function getRouteSegments(path) {
+  return path.split('/').filter(Boolean);
+}
+
+function matchRoute(routePath, candidatePath) {
+  const routeSegments = getRouteSegments(routePath);
+  const candidateSegments = getRouteSegments(candidatePath);
+
+  if (routeSegments.length !== candidateSegments.length) {
+    return null;
+  }
+
+  const params = {};
+
+  for (let i = 0; i < routeSegments.length; i += 1) {
+    const routeSegment = routeSegments[i];
+    const candidateSegment = candidateSegments[i];
+
+    if (routeSegment.startsWith(':')) {
+      params[routeSegment.slice(1)] = candidateSegment;
+      continue;
+    }
+
+    if (routeSegment !== candidateSegment) {
+      return null;
+    }
+  }
+
+  return params;
+}
+
+function resolveRoute(pathname) {
+  for (const route of routes) {
+    const params = matchRoute(route.path, pathname);
+    if (params) {
+      return route.createView(params);
+    }
+  }
+
+  return buildTextPage('Page not found', 'h2');
+}
+
 const Router = {
   init: () => {
-    document.querySelectorAll("a.nav__link").forEach((a) => {
-      a.addEventListener("click", (event) => {
+    document.querySelectorAll('a.nav__link').forEach((a) => {
+      a.addEventListener('click', (event) => {
         event.preventDefault();
-        const href = event.target.getAttribute("href");
+        const href = a.getAttribute('href');
         Router.go(href);
       });
     });
-    window.addEventListener("popstate", (event) => {
-      Router.go(event.state.route, false);
+
+    window.addEventListener('popstate', (event) => {
+      Router.go(event.state?.route ?? location.pathname, false);
     });
-    Router.go(location.pathname);
+
+    Router.go(location.pathname, false);
   },
 
   go: (route, addToHistory = true) => {
     if (addToHistory) {
-      history.pushState({ route }, "", route);
-    }
-    let pageElement = null;
-    switch (route) {
-      case "/":
-        pageElement = document.createElement("menu-page");
-        break;
-      case "/products":
-        pageElement = document.createElement("menu-page");
-        break;
-      case "/restaurants":
-        pageElement = document.createElement("h1");
-        pageElement.textContent = "Restaurants Page";
-        break;
-      case "/order":
-        pageElement = document.createElement("h1");
-        pageElement.textContent = "Order Page";
-        break;
-      default:
-        if (route.startsWith("/products/")) {
-          pageElement = document.createElement("h2");
-
-          const paramId = route.substring(route.lastIndexOf("/") + 1);
-          pageElement.textContent = "Product detail page: " + String(paramId);
-
-          pageElement.dataset.productId = paramId;
-        }
-        break;
-    }
-    if (pageElement) {
-      let currentPage = document.querySelector("main").firstElementChild;
-      if (currentPage) {
-        currentPage.remove();
-        document.querySelector("main").appendChild(pageElement);
-      } else {
-        document.querySelector("main").appendChild(pageElement);
-      }
+      history.pushState({ route }, '', route);
     }
 
-    window.scrollY = 0;
-    window.scrollX = 0;
+    const pageElement = resolveRoute(route);
+    const main = document.querySelector('main');
+    const currentPage = main.firstElementChild;
+
+    if (currentPage) {
+      currentPage.remove();
+    }
+
+    main.appendChild(pageElement);
+    window.scrollTo(0, 0);
   },
 };
 

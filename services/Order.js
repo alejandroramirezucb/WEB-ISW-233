@@ -1,16 +1,21 @@
-import { getProductById } from "./Menu.js";
+import { commandManager } from './CommandManager.js';
+import {
+  AddToCartCommand,
+  RemoveFromCartCommand,
+} from './commands/cartCommands.js';
 
 export async function addToCart(id) {
-  const product = await getProductById(id);
-  const results = app.store.cart.filter((productInCart) => productInCart.product.id == id);
-  if (results.length == 1) {
-    app.store.cart = app.store.cart.map((p) =>
-      p.product.id == id ? { ...p, quantity: p.quantity + 1 } : p,
-    );
-  } else {
-    // app.store.cart.push(results);
-    app.store.cart = [...app.store.cart, { product, quantity: 1 }];
-  }
+  await commandManager.execute(new AddToCartCommand(id, app.store));
 }
 
-export function removeFromCart(id) {}
+export async function removeFromCart(id) {
+  await commandManager.execute(new RemoveFromCartCommand(id, app.store));
+}
+
+export async function undoLastCartAction() {
+  return await commandManager.undo();
+}
+
+export function canUndoCartAction() {
+  return commandManager.canUndo();
+}

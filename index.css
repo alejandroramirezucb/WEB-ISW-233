@@ -2,7 +2,7 @@
 @import url(./blocks/page.css);
 @import url(./blocks/nav.css);
 @import url(./blocks/footer.css);
-@import url(./blocks/productItem.css);
+@import url(./blocks/productItem/productItem.css);
 
 .container {
   background: #fff;

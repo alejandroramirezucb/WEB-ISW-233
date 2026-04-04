@@ -1,0 +1,71 @@
+.order-page {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+}
+
+.order-page__title {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.order-page__subtitle,
+.order-page__hint {
+  margin: 8px 0;
+  color: #475569;
+}
+
+.order-page__hint {
+  font-size: 0.9rem;
+}
+
+.order-page__undo {
+  margin: 8px 0 16px;
+  background: #1d4ed8;
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.order-page__undo:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.order-page__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-page__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.order-page__remove {
+  background: #dc2626;
+  color: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.order-page__empty {
+  margin: 12px 0 0;
+  color: #64748b;
+}
